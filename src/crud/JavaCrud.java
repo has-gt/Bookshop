@@ -21,6 +21,8 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import net.proteanit.sql.DbUtils;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class JavaCrud {
 
@@ -211,7 +213,43 @@ public class JavaCrud {
 		lblNewLabel_1_1_1.setBounds(25, 22, 96, 22);
 		panel_1.add(lblNewLabel_1_1_1);
 		
-		txtbid = new JTextField();
+		txtbid = new JTextField(); //Search BookID
+		txtbid.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				//key released event 
+				try {
+					
+					String id = txtbid.getText();
+					pst = con.prepareStatement("select name,edition,price from book where id=?");
+					pst.setString(1, id);
+					ResultSet rs = pst.executeQuery();
+					
+				if(rs.next () ==true)
+				{
+					String name = rs.getString(1);
+					String edition = rs.getString(2);
+					String price = rs.getString(3);
+					
+					txtbname.setText(name);
+					txtedition.setText(edition);
+					txtprice.setText(price);
+				}
+				else
+				{
+					txtbname.setText("");
+					txtedition.setText("");
+					txtprice.setText("");
+				}
+				}
+				catch (SQLException ex) {
+			
+				}
+				
+			}
+		});
+		
+		
 		txtbid.setColumns(10);
 		txtbid.setBounds(158, 22, 153, 20);
 		panel_1.add(txtbid);
