@@ -79,7 +79,7 @@ public class JavaCrud {
 	}
 	
 	//Jtable
-	public void table_load()
+	public void table_load()    //--------------Jtable-------------------
 	{
 		try
 		{
@@ -92,14 +92,6 @@ public class JavaCrud {
 			e.printStackTrace();
 		}
 	} 
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 
@@ -160,7 +152,7 @@ public class JavaCrud {
 		table = new JTable();
 		scrollPane.setViewportView(table);
 		
-		JButton btnNewButton = new JButton("Save");      //Save Button
+		JButton btnNewButton = new JButton("Save");      //-------Save button---------------------
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -177,10 +169,10 @@ public class JavaCrud {
 					pst.setString(3, price);
 					pst.executeUpdate();
 					JOptionPane.showMessageDialog(null,"Record Added!!!!");
-					//table_load();
-					txtbname.setText("");
-					txtedition.setText("");
-					txtprice.setText("");
+					table_load();
+					txtbname.setText(""); //Clear text box after entering data
+					txtedition.setText(""); //Clear text box 
+					txtprice.setText(""); //Clear text box 
 					txtbname.requestFocus(); //Focus on the first text box after entering data
 					
 				}
@@ -194,11 +186,29 @@ public class JavaCrud {
 		btnNewButton.setBounds(20, 353, 89, 23);
 		frame.getContentPane().add(btnNewButton);
 		
-		JButton btnNewButton_1 = new JButton("Exit");
+		JButton btnNewButton_1 = new JButton("Exit");   //-------Exit button----------------------
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				System.exit(0);
+				
+			}
+			
+		});
 		btnNewButton_1.setBounds(154, 353, 89, 23);
 		frame.getContentPane().add(btnNewButton_1);
 		
-		JButton btnNewButton_1_1 = new JButton("Clear");
+		JButton btnNewButton_1_1 = new JButton("Clear");   //-------Clear button----------------------
+		btnNewButton_1_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				txtbname.setText("");
+				txtedition.setText("");
+				txtprice.setText("");
+				txtbname.requestFocus(); 
+				
+			}
+		});
 		btnNewButton_1_1.setBounds(297, 353, 89, 23);
 		frame.getContentPane().add(btnNewButton_1_1);
 		
@@ -254,11 +264,76 @@ public class JavaCrud {
 		txtbid.setBounds(158, 22, 153, 20);
 		panel_1.add(txtbid);
 		
-		JButton btnUpdate = new JButton("Update");
+		JButton btnUpdate = new JButton("Update");  //-------Update Button---------------------
+		btnUpdate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				String bname,edition,price,bid; //Declaring variables
+				
+				bname = txtbname.getText();
+				edition = txtedition.getText();
+				price = txtprice.getText();
+				bid = txtbid.getText();
+			
+				try {
+					pst = con.prepareStatement("update book set name=?,edition=?,price=? where id=?");
+					pst.setString(1, bname);
+					pst.setString(2, edition);
+					pst.setString(3, price);
+					pst.setString(4, bid);
+					pst.executeUpdate();
+					JOptionPane.showMessageDialog(null,"Record Updated!!!!");
+					table_load();
+					txtbname.setText("");
+					txtedition.setText("");
+					txtprice.setText("");
+					txtbname.requestFocus(); //Focus on the first text box after entering data
+					
+				}
+				catch(SQLException e1)
+				{
+					e1.printStackTrace();
+				}
+				
+				
+				
+				
+				
+				
+				
+			}
+		});
 		btnUpdate.setBounds(416, 407, 89, 23);
 		frame.getContentPane().add(btnUpdate);
 		
-		JButton btnDelete = new JButton("Delete");
+		JButton btnDelete = new JButton("Delete");  //-------Delete button---------------------
+		btnDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				String bid; //Declaring variables
+				bid = txtbid.getText();
+			
+				try {
+					pst = con.prepareStatement("delete from book where id=?");
+					pst.setString(1, bid);
+					pst.executeUpdate();
+					JOptionPane.showMessageDialog(null,"Record Deleted!!!!");
+					table_load();
+					txtbname.setText("");
+					txtedition.setText("");
+					txtprice.setText("");
+					txtbname.requestFocus(); //Focus on the first text box after entering data
+					
+				}
+				catch(SQLException e1)
+				{
+					e1.printStackTrace();
+				}
+				
+				
+				
+			}
+		});
 		btnDelete.setBounds(561, 407, 89, 23);
 		frame.getContentPane().add(btnDelete);
 	}
